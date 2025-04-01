@@ -1,0 +1,25 @@
+stages:
+    - build
+    - deploy
+
+build:
+  stage: build
+  image: node:latest
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - dist
+  only:
+    - main
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - ssh -i $SSH_ID_RSA_PUB $SSH_USER@$SSH_SERVER 
+  script:
+    - scp dist $SSH_USER@$SSH_SERVER:$PROJECT_PATH
+  only:
+    - main
