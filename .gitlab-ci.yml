@@ -1,16 +1,18 @@
- stages:
+stages:
     - build
     - deploy
 
 build:
   stage: build
   image: node:latest
-  scripts:
+  script:
     - npm install
     - npm run build
   artifacts:
     paths:
       - dist
+  only:
+    - main
 
 deploy:
   stage: deploy
